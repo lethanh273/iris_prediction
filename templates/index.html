@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>Iris Predictor</h2>
+    <form id="predictForm">
+      <input name="f1" placeholder="Sepal length" />
+      <input name="f2" placeholder="Sepal width" />
+      <input name="f3" placeholder="Petal length" />
+      <input name="f4" placeholder="Petal width" />
+      <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      document.getElementById("predictForm").onsubmit = async function (e) {
+        e.preventDefault()
+        const form = e.target
+        const data = [
+          parseFloat(form.f1.value),
+          parseFloat(form.f2.value),
+          parseFloat(form.f3.value),
+          parseFloat(form.f4.value)
+        ]
+        const res = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ features: data })
+        })
+        const json = await res.json()
+        document.getElementById("result").innerText = "Prediction: " + json.prediction
+      }
+    </script>
+  </body>
+</html>
+
